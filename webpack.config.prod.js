@@ -44,15 +44,14 @@ module.exports = {
   },
   plugins: [
     new webpack.ProgressPlugin(),
-    new HtmlWebpackPlugin({
-      gameName: "Sergii's RPG Game",
-      template: "src/index.html",
-    }),
     new CopyWebpackPlugin({
       patterns: [
         { from: "public", to: "" },
         { from: "pwa", to: "" },
       ],
+    }),
+    new HtmlWebpackPlugin({
+      template: "src/index.html",
     }),
     new InjectManifest({
       swSrc: path.resolve(__dirname, "pwa/sw.js"),
