@@ -1,6 +1,6 @@
 import "phaser";
 
-import { Character } from "src/sprites/Character";
+import Character from "src/sprites/Character";
 
 export default class Player extends Character {
   private keys: Phaser.Types.Input.Keyboard.CursorKeys;

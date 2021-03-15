@@ -1,6 +1,6 @@
 import "phaser";
 
-import { Character } from "src/sprites/Character";
+import type Character from "src/sprites/Character";
 import Player from "src/sprites/characters/Player";
 import Intro from "src/sprites/characters/Intro";
 

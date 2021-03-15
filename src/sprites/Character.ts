@@ -1,7 +1,7 @@
 import "phaser";
 
-export class Character extends Phaser.Physics.Arcade.Sprite {
-  private last_dir = "down";
+export default abstract class Character extends Phaser.Physics.Arcade.Sprite {
+  protected last_dir = "down";
 
   constructor(scene: Phaser.Scene, x: number, y: number, texture: string) {
     super(scene, x, y, texture, 1);
