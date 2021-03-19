@@ -1,12 +1,15 @@
 import "phaser";
 
-import Character from "src/sprites/Character";
+import Character from "src/Sprites/Character";
+import type { CharacterState } from "src/Sprites/Character";
+
+export interface PlayerState extends CharacterState {}
 
 export default class Player extends Character {
   private keys: Phaser.Types.Input.Keyboard.CursorKeys;
 
-  constructor(scene: Phaser.Scene, x: number, y: number, texture: string) {
-    super(scene, x, y, texture);
+  constructor(scene: Phaser.Scene, state: PlayerState) {
+    super(scene, state, "player");
 
     const { LEFT, RIGHT, UP, DOWN } = Phaser.Input.Keyboard.KeyCodes;
     // this.keys  = this.scene.input.keyboard.addKeys({
