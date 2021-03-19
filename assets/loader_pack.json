@@ -1,0 +1,38 @@
+{
+  "main": {
+    "files": [
+      {
+        "type": "image",
+        "key": "merged_pipo",
+        "url": "assets/Pipoya_RPG_Tileset/merged_pipo.png"
+      },
+      {
+        "type": "tilemapTiledJSON",
+        "key": "first",
+        "url": "assets/tilemaps/first.json"
+      },
+      {
+        "type": "spritesheet",
+        "key": "player",
+        "url": "assets/Pipoya_RPG_Character_Sprites/Male/Male_01-1.png",
+        "frameConfig": {
+          "frameWidth": 32,
+          "frameHeight": 32,
+          "margin": 1,
+          "spacing": 2
+        }
+      },
+      {
+        "type": "spritesheet",
+        "key": "intro",
+        "url": "assets/Pipoya_RPG_Character_Sprites/Male/Male_02-1.png",
+        "frameConfig": {
+          "frameWidth": 32,
+          "frameHeight": 32,
+          "margin": 1,
+          "spacing": 2
+        }
+      }
+    ]
+  }
+}
