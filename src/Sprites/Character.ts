@@ -1,7 +1,7 @@
 import "phaser";
 
 import Sprite from "src/Sprites/Sprite";
-import type { SpriteState, SpriteConstructor } from "src/Sprites/Sprite";
+import type { SpriteState } from "src/Sprites/Sprite";
 
 export interface CharacterState extends SpriteState {
   last_dir?: string;
@@ -10,8 +10,8 @@ export interface CharacterState extends SpriteState {
 export default abstract class Character extends Sprite {
   protected last_dir = "down";
 
-  constructor(scene: Phaser.Scene, state: CharacterState, texture: string) {
-    super(scene, state, texture);
+  constructor(scene: Phaser.Scene, texture: string, state: CharacterState) {
+    super(scene, texture, state);
 
     if (state.last_dir) {
       this.last_dir = state.last_dir;

@@ -10,6 +10,7 @@ import type Player from "src/Sprites/Player";
 export interface MapState {
   id: string;
   spriteStates: SpriteState[];
+  goldcoins: { x: number; y: number }[];
 }
 
 export interface MapConstructor {
@@ -18,7 +19,10 @@ export interface MapConstructor {
 
 export default abstract class BaseMap extends Phaser.Tilemaps.Tilemap {
   id: string;
-  sprites: Sprite[];
+  sprites: Phaser.GameObjects.Group;
+  fences: Phaser.Physics.Arcade.StaticGroup;
+  goldcoins: Phaser.Physics.Arcade.Group;
+  colliders: Phaser.Physics.Arcade.Collider[];
 
   // loading is done in the constructor
   constructor(scene: Phaser.Scene, id: string, key: string, state?: MapState) {
@@ -38,7 +42,12 @@ export default abstract class BaseMap extends Phaser.Tilemaps.Tilemap {
       )
     );
     this.id = id;
-    this.sprites = [];
+    this.sprites = this.scene.add.group();
+    this.fences = this.scene.physics.add.staticGroup();
+    this.goldcoins = this.scene.physics.add.group();
+    this.colliders = [];
+
+    this.scene.game.registry.set("currentMap", this);
 
     const tileset = this.addTilesetImage(
       "merged_pipo",
@@ -57,34 +66,55 @@ export default abstract class BaseMap extends Phaser.Tilemaps.Tilemap {
 
     layerc.setCollisionByExclusion([-1]);
 
-    // the player is just a normal game object
-    // custom info for the player is stored seperately and managed by GameScene
-    // need to make stuff for game objects like we did for maps
-
-    // don't save state that doesn't change like certain properties?
-    // still have to remember whether the sprite still exists
     if (state) {
       for (const spriteState of state.spriteStates) {
-        this.sprites.push(loadSprite(this.scene, spriteState));
+        this.sprites.add(loadSprite(this.scene, spriteState));
+      }
+      layero.objects.forEach((obj) => {
+        if (obj.type === "fence") {
+          const fence = this.scene.add.rectangle(obj.x!, obj.y!, 8, 8);
+          this.fences.add(fence);
+        }
+      });
+      for (const goldcoin of state.goldcoins) {
+        this.goldcoins.add(
+          this.scene.add.image(goldcoin.x, goldcoin.y, "goldcoin")
+        );
       }
     } else {
       layero.objects.forEach((obj) => {
-        this.sprites.push(
-          loadSprite(this.scene, {
-            name: obj.name,
-            type: obj.type,
-            x: obj.x || 0,
-            y: obj.y || 0,
-          })
-        );
+        switch (obj.type) {
+          case "fence":
+            const fence = this.scene.add.rectangle(obj.x!, obj.y!, 8, 8);
+            this.fences.add(fence);
+            break;
+          case "gold":
+            const goldcoin = this.scene.add.image(obj.x!, obj.y!, "goldcoin");
+            this.goldcoins.add(goldcoin);
+            break;
+          default:
+            this.sprites.add(
+              loadSprite(this.scene, {
+                name: obj.name,
+                type: obj.type,
+                x: obj.x || 0,
+                y: obj.y || 0,
+              })
+            );
+            break;
+        }
       });
     }
 
-    const player = this.sprites.find((x) => x.type === "player") as Player;
+    const player = this.sprites.getMatching("type", "player")[0] as Player;
 
     // filter out sprites based on collision property?
-    this.scene.physics.add.collider(this.sprites, layerc);
-    this.scene.physics.add.collider(
+    const collider1 = this.scene.physics.add.collider(this.sprites, layerc);
+    const collider2 = this.scene.physics.add.collider(
+      this.sprites,
+      this.fences
+    );
+    const collider3 = this.scene.physics.add.collider(
       this.sprites,
       this.sprites,
       (obj1, obj2) => {
@@ -95,16 +125,35 @@ export default abstract class BaseMap extends Phaser.Tilemaps.Tilemap {
         sprite2.touched(sprite1);
       }
     );
+    const collider4 = this.scene.physics.add.overlap(
+      player,
+      this.goldcoins,
+      (obj1, obj2) => {
+        const player = obj1 as Player;
+        const goldcoin = obj2 as Sprite;
+
+        this.goldcoins.remove(goldcoin, true, true);
+        player.globalPlayer.setState({
+          gold: player.globalPlayer.state.gold + 5,
+        });
+      }
+    );
+
+    this.colliders.push(collider1, collider2, collider3, collider4);
 
     this.scene.cameras.main.startFollow(player);
   }
 
-  // autosaving?
-  // onunload? remember to clear any events in the stop method
   getState(): MapState {
     return {
       id: this.id,
-      spriteStates: this.sprites.map((sprite) => sprite.getState()),
+      spriteStates: this.sprites
+        .getChildren()
+        .map((sprite) => (sprite as Sprite).getState()),
+      goldcoins: this.goldcoins.getChildren().map((goldcoin) => ({
+        x: (goldcoin as Phaser.GameObjects.Image).x,
+        y: (goldcoin as Phaser.GameObjects.Image).y,
+      })),
     };
   }
 
@@ -113,13 +162,20 @@ export default abstract class BaseMap extends Phaser.Tilemaps.Tilemap {
   }
 
   destroy() {
+    this.sprites.destroy(true, true);
+    this.fences.destroy(true, true);
+    this.goldcoins.destroy(true, true);
+    this.colliders.forEach((x) => {
+      x.destroy();
+    });
     super.destroy();
-    this.sprites.forEach((sprite) => sprite.destroy());
   }
 
   switchMap(id: string) {
+    this.scene.game.registry.set("currentMap", null);
     this.save();
+    const scene = this.scene;
     this.destroy();
-    loadMap(this.scene, id);
+    loadMap(scene, id);
   }
 }

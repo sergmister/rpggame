@@ -1,15 +1,17 @@
 import "phaser";
 
-import { MenuKey, MenuProps, MenuScene } from "src/Scenes/MenuScene";
 import {
   InGameMenuKey,
   InGameMenuProps,
   InGameMenuScene,
 } from "src/Scenes/InGameMenuScene";
+import { HotbarKey, HotbarScene } from "src/Scenes/HotbarScene";
+import { InventoryKey, InventoryScene } from "src/Scenes/InventoryScene";
 
 import { loadMap } from "src/Maps/maputils";
 
 import type BaseMap from "src/Maps/BaseMap";
+import GlobalPlayer from "src/GlobalPlayer";
 
 export const GameKey = "Game";
 
@@ -18,9 +20,6 @@ export interface GameProps {
 }
 
 export class GameScene extends Phaser.Scene {
-  currentMapID: string = "intro";
-  currentMap?: BaseMap;
-
   constructor() {
     super({ key: GameKey });
   }
@@ -34,22 +33,33 @@ export class GameScene extends Phaser.Scene {
       localStorage.clear();
     }
 
+    const player = new GlobalPlayer();
+    this.registry.set("GlobalPlayer", player);
+
     this.cameras.main.setZoom(2);
 
-    this.currentMap = loadMap(this, this.currentMapID);
+    const currentMap = loadMap(this, player.state.currentMapID);
+    this.registry.set("currentMap", currentMap);
 
-    this.input.keyboard.on("keydown-M", () => {
+    this.input.keyboard.on("keyup-M", () => {
       this.scene.switch(InGameMenuKey);
+    });
+
+    this.input.keyboard.on("keyup-E", () => {
+      this.scene.pause(GameKey);
+      this.scene.launch(InventoryKey);
     });
 
     this.registry.set("gameScene", this);
 
-    const timer = this.time.addEvent({
-      delay: 5000,
-      callback: this.saveGame,
-      callbackScope: this,
-      loop: true,
-    });
+    // const timer = this.time.addEvent({
+    //   delay: 5000,
+    //   callback: this.saveGame,
+    //   callbackScope: this,
+    //   loop: true,
+    // });
+
+    this.scene.launch(HotbarKey);
   }
 
   update() {
@@ -61,7 +71,8 @@ export class GameScene extends Phaser.Scene {
   }
 
   saveGame() {
-    this.currentMap?.save();
+    (this.registry.get("GlobalPlayer") as GlobalPlayer)?.save();
+    (this.registry.get("currentMap") as BaseMap)?.save();
     console.log("saved game");
   }
 }

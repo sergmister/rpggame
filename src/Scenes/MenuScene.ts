@@ -1,11 +1,6 @@
 import "phaser";
 
 import { GameKey, GameProps, GameScene } from "src/Scenes/GameScene";
-import {
-  InGameMenuKey,
-  InGameMenuProps,
-  InGameMenuScene,
-} from "src/Scenes/InGameMenuScene";
 
 export const MenuKey = "Menu";
 
@@ -20,6 +15,8 @@ export class MenuScene extends Phaser.Scene {
 
   create() {
     this.cameras.main.startFollow({ x: 400, y: 300 });
+
+    this.cameras.main.setBackgroundColor(0x222222);
 
     const newGameButton = this.add
       .text(400, 240, "New Game", {

@@ -3,22 +3,18 @@ import "phaser";
 // genarics to the rescue?
 
 export interface SpriteState {
-  name: string;
+  name?: string;
   type: string;
   x: number;
   y: number;
 }
 
-export interface SpriteConstructor {
-  new (scene: Phaser.Scene, state: SpriteState): Sprite;
-}
-
-export default abstract class Sprite extends Phaser.Physics.Arcade.Sprite {
-  name: string;
-
-  constructor(scene: Phaser.Scene, state: SpriteState, texture: string) {
+export default class Sprite extends Phaser.Physics.Arcade.Sprite {
+  constructor(scene: Phaser.Scene, texture: string, state: SpriteState) {
     super(scene, state.x, state.y, texture);
-    this.name = state.name;
+    if (state.name) {
+      this.name = state.name;
+    }
     this.type = state.type;
   }
 
@@ -26,10 +22,12 @@ export default abstract class Sprite extends Phaser.Physics.Arcade.Sprite {
 
   getState(): SpriteState {
     return {
-      name: this.name,
-      type: this.type,
-      x: this.x,
-      y: this.y,
+      ...(this.name && { name: this.name }),
+      ...{
+        type: this.type,
+        x: this.x,
+        y: this.y,
+      },
     };
   }
 

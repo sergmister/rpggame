@@ -5,7 +5,7 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const { InjectManifest } = require("workbox-webpack-plugin");
 
 module.exports = {
-  entry: "./src/main.ts",
+  entry: { main: "./src/main.ts", canvas: "./src/main_canvas.ts" },
   mode: "production",
   output: {
     path: path.resolve(__dirname, "dist"),
@@ -51,7 +51,14 @@ module.exports = {
       ],
     }),
     new HtmlWebpackPlugin({
+      filename: "index.html",
       template: "src/index.html",
+      chunks: ["main"],
+    }),
+    new HtmlWebpackPlugin({
+      filename: "canvas.html",
+      template: "src/canvas.html",
+      chunks: ["canvas"],
     }),
     new InjectManifest({
       swSrc: path.resolve(__dirname, "pwa/sw.js"),

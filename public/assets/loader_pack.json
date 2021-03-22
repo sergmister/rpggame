@@ -8,12 +8,54 @@
       },
       {
         "type": "tilemapTiledJSON",
-        "key": "first",
-        "url": "assets/tilemaps/first.json"
+        "key": "tilemap_intro",
+        "url": "assets/tilemaps/intro.json"
+      },
+      {
+        "type": "tilemapTiledJSON",
+        "key": "tilemap_home",
+        "url": "assets/tilemaps/home.json"
+      },
+      {
+        "type": "tilemapTiledJSON",
+        "key": "tilemap_desert",
+        "url": "assets/tilemaps/desert.json"
+      },
+      {
+        "type": "tilemapTiledJSON",
+        "key": "tilemap_cave",
+        "url": "assets/tilemaps/cave.json"
       },
       {
         "type": "spritesheet",
-        "key": "player",
+        "key": "icons_inventory",
+        "url": "assets/Shikashi's_Fantasy_Icons_Pack_v2/Icons_Inventory.png",
+        "frameConfig": {
+          "frameWidth": 32,
+          "frameHeight": 32,
+          "margin": 1,
+          "spacing": 2
+        }
+      },
+      {
+        "type": "spritesheet",
+        "key": "icons_shop",
+        "url": "assets/Shikashi's_Fantasy_Icons_Pack_v2/Icons_Shop.png",
+        "frameConfig": {
+          "frameWidth": 32,
+          "frameHeight": 32,
+          "margin": 1,
+          "spacing": 2
+        }
+      },
+      {
+        "type": "image",
+        "key": "goldcoin",
+        "url": "assets/goldcoin.png"
+      },
+      {
+        "type": "spritesheet",
+        "key": "Male_01-1",
         "url": "assets/Pipoya_RPG_Character_Sprites/Male/Male_01-1.png",
         "frameConfig": {
           "frameWidth": 32,
@@ -24,8 +66,162 @@
       },
       {
         "type": "spritesheet",
-        "key": "intro",
+        "key": "Male_02-1",
         "url": "assets/Pipoya_RPG_Character_Sprites/Male/Male_02-1.png",
+        "frameConfig": {
+          "frameWidth": 32,
+          "frameHeight": 32,
+          "margin": 1,
+          "spacing": 2
+        }
+      },
+      {
+        "type": "spritesheet",
+        "key": "Male_03-1",
+        "url": "assets/Pipoya_RPG_Character_Sprites/Male/Male_03-1.png",
+        "frameConfig": {
+          "frameWidth": 32,
+          "frameHeight": 32,
+          "margin": 1,
+          "spacing": 2
+        }
+      },
+      {
+        "type": "spritesheet",
+        "key": "Male_04-1",
+        "url": "assets/Pipoya_RPG_Character_Sprites/Male/Male_04-1.png",
+        "frameConfig": {
+          "frameWidth": 32,
+          "frameHeight": 32,
+          "margin": 1,
+          "spacing": 2
+        }
+      },
+      {
+        "type": "spritesheet",
+        "key": "Male_05-1",
+        "url": "assets/Pipoya_RPG_Character_Sprites/Male/Male_05-1.png",
+        "frameConfig": {
+          "frameWidth": 32,
+          "frameHeight": 32,
+          "margin": 1,
+          "spacing": 2
+        }
+      },
+      {
+        "type": "spritesheet",
+        "key": "Male_06-1",
+        "url": "assets/Pipoya_RPG_Character_Sprites/Male/Male_06-1.png",
+        "frameConfig": {
+          "frameWidth": 32,
+          "frameHeight": 32,
+          "margin": 1,
+          "spacing": 2
+        }
+      },
+      {
+        "type": "spritesheet",
+        "key": "Male_07-1",
+        "url": "assets/Pipoya_RPG_Character_Sprites/Male/Male_07-1.png",
+        "frameConfig": {
+          "frameWidth": 32,
+          "frameHeight": 32,
+          "margin": 1,
+          "spacing": 2
+        }
+      },
+      {
+        "type": "spritesheet",
+        "key": "Male_08-1",
+        "url": "assets/Pipoya_RPG_Character_Sprites/Male/Male_08-1.png",
+        "frameConfig": {
+          "frameWidth": 32,
+          "frameHeight": 32,
+          "margin": 1,
+          "spacing": 2
+        }
+      },
+      {
+        "type": "spritesheet",
+        "key": "Male_09-1",
+        "url": "assets/Pipoya_RPG_Character_Sprites/Male/Male_09-1.png",
+        "frameConfig": {
+          "frameWidth": 32,
+          "frameHeight": 32,
+          "margin": 1,
+          "spacing": 2
+        }
+      },
+      {
+        "type": "spritesheet",
+        "key": "Male_10-1",
+        "url": "assets/Pipoya_RPG_Character_Sprites/Male/Male_10-1.png",
+        "frameConfig": {
+          "frameWidth": 32,
+          "frameHeight": 32,
+          "margin": 1,
+          "spacing": 2
+        }
+      },
+      {
+        "type": "spritesheet",
+        "key": "Male_11-1",
+        "url": "assets/Pipoya_RPG_Character_Sprites/Male/Male_11-1.png",
+        "frameConfig": {
+          "frameWidth": 32,
+          "frameHeight": 32,
+          "margin": 1,
+          "spacing": 2
+        }
+      },
+      {
+        "type": "spritesheet",
+        "key": "Enemy_01-1",
+        "url": "assets/Pipoya_RPG_Character_Sprites/Enemy/Enemy_01-1.png",
+        "frameConfig": {
+          "frameWidth": 32,
+          "frameHeight": 32,
+          "margin": 1,
+          "spacing": 2
+        }
+      },
+      {
+        "type": "spritesheet",
+        "key": "Enemy_02-1",
+        "url": "assets/Pipoya_RPG_Character_Sprites/Enemy/Enemy_02-1.png",
+        "frameConfig": {
+          "frameWidth": 32,
+          "frameHeight": 32,
+          "margin": 1,
+          "spacing": 2
+        }
+      },
+      {
+        "type": "spritesheet",
+        "key": "Enemy_04-1",
+        "url": "assets/Pipoya_RPG_Character_Sprites/Enemy/Enemy_04-1.png",
+        "frameConfig": {
+          "frameWidth": 32,
+          "frameHeight": 32,
+          "margin": 1,
+          "spacing": 2
+        }
+      },
+      {
+        "type": "spritesheet",
+        "key": "Enemy_05-1",
+        "url": "assets/Pipoya_RPG_Character_Sprites/Enemy/Enemy_05-1.png",
+        "frameConfig": {
+          "frameWidth": 32,
+          "frameHeight": 32,
+          "margin": 1,
+          "spacing": 2
+        }
+      },
+      {
+        "type": "spritesheet",
+        "key": "Enemy_09-1",
+        "url": "assets/Pipoya_RPG_Character_Sprites/Enemy/Enemy_09-1.png",
         "frameConfig": {
           "frameWidth": 32,
           "frameHeight": 32,

@@ -13,7 +13,7 @@ import { GameOverScene } from "src/Scenes/GameOverScene";
 export const EE = new EventEmitter();
 
 const config: Phaser.Types.Core.GameConfig = {
-  type: Phaser.AUTO,
+  type: Phaser.CANVAS,
   parent: "gamediv",
   scale: {
     expandParent: false,
