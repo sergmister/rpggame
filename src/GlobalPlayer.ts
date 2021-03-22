@@ -13,6 +13,9 @@ export interface GlobalPlayerState {
   selectedItem: number;
 }
 
+/**
+ * class that contains all the data and logic required for the player that is not for the graphics
+ */
 export default class GlobalPlayer {
   state: GlobalPlayerState;
 

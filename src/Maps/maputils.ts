@@ -17,6 +17,7 @@ const maplist: { id: string; class: MapConstructor }[] = [
   { id: "cave", class: CaveMap },
 ];
 
+// function to load a map from an ID string
 export function loadMap(scene: Phaser.Scene, id: string): BaseMap {
   let map = maplist.find((x) => x.id === id);
   if (!map) {

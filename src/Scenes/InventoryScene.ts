@@ -8,6 +8,9 @@ import type { DialogProps } from "./DialogScene";
 
 export const InventoryKey = "Inventory";
 
+/**
+ * renders the inventory
+ */
 export class InventoryScene extends Phaser.Scene {
   private centerX = 0;
   private centerY = 0;

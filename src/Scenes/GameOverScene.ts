@@ -6,6 +6,9 @@ export interface GameOverProps {
   win: boolean;
 }
 
+/**
+ * renders the gameover scene
+ */
 export class GameOverScene extends Phaser.Scene {
   constructor() {
     super({ key: GameOverKey });

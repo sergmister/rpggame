@@ -6,6 +6,9 @@ export const MenuKey = "Menu";
 
 export interface MenuProps {}
 
+/**
+ * menu scene displayed before the game starts
+ */
 export class MenuScene extends Phaser.Scene {
   constructor() {
     super({ key: MenuKey });

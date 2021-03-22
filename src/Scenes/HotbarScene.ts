@@ -24,6 +24,9 @@ type numKeys = {
 
 export const HotbarKey = "Hotbar";
 
+/**
+ * renders the hotbar for the player
+ */
 export class HotbarScene extends Phaser.Scene {
   private centerX = 0;
   private centerY = 0;

@@ -37,4 +37,5 @@ const config: Phaser.Types.Core.GameConfig = {
   ],
 };
 
+// runs the game with the config and the scenes
 const game = new Phaser.Game(config);

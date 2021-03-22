@@ -114,6 +114,7 @@ export const itemList: Item[] = [
   },
 ];
 
+// function for getting an item from a string ID
 export function getItem(name: string): Item {
   let item = itemList.find((x) => x.name === name);
   if (!item) {
@@ -121,8 +122,6 @@ export function getItem(name: string): Item {
   }
   return item;
 }
-
-// min xp for crafting and shop?
 
 export const itemRecipes: { in: string[]; out: string }[] = [
   { in: ["wooden sword", "wooden sword"], out: "stone sword" },

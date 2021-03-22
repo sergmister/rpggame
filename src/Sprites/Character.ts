@@ -7,6 +7,9 @@ export interface CharacterState extends SpriteState {
   last_dir?: string;
 }
 
+/**
+ * base class for a character sprite
+ */
 export default abstract class Character extends Sprite {
   protected last_dir = "down";
 

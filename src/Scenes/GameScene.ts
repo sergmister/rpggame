@@ -19,6 +19,9 @@ export interface GameProps {
   loadFromSave: boolean;
 }
 
+/**
+ * main scene for the game that renders the map and all the sprites
+ */
 export class GameScene extends Phaser.Scene {
   constructor() {
     super({ key: GameKey });
@@ -60,10 +63,6 @@ export class GameScene extends Phaser.Scene {
     // });
 
     this.scene.launch(HotbarKey);
-  }
-
-  update() {
-    // console.log(1);
   }
 
   launchInGameMenu() {

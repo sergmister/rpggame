@@ -13,15 +13,15 @@ type moveKeys = {
 
 const { W, A, S, D } = Phaser.Input.Keyboard.KeyCodes;
 
-// only state for a specific scene
 export interface PlayerState extends CharacterState {}
 
+/**
+ * class for the player that is strictly for graphics and user interaction
+ */
 export default class Player extends Character {
   globalPlayer: GlobalPlayer;
 
   private keys: moveKeys;
-
-  // private goldTimer: Phaser.Time.TimerEvent;
 
   frozen = false;
 
@@ -36,15 +36,6 @@ export default class Player extends Character {
       down: S,
       left: A,
     }) as moveKeys;
-
-    // this.goldTimer = this.scene.time.addEvent({
-    //   delay: 5000,
-    //   callback: () => {
-    //     this.globalPlayer.setState({ gold: this.globalPlayer.state.gold + 1 });
-    //   },
-    //   callbackScope: this,
-    //   loop: true,
-    // });
   }
 
   preUpdate(time: number, delta: number) {

@@ -9,6 +9,9 @@ export interface DialogProps {
   callback?(ret?: string, stop?: boolean): void;
 }
 
+/**
+ * renders a dialog box
+ */
 export class DialogScene extends Phaser.Scene {
   private centerX = 0;
   private centerY = 0;

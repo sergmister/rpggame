@@ -12,6 +12,9 @@ export interface ShopProps {
   callback?(retIndex?: number): void;
 }
 
+/**
+ * renders a shop
+ */
 export class ShopScene extends Phaser.Scene {
   private centerX = 0;
   private centerY = 0;

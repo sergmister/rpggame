@@ -9,6 +9,9 @@ export interface SpriteState {
   y: number;
 }
 
+/**
+ * base class for a sprite
+ */
 export default class Sprite extends Phaser.Physics.Arcade.Sprite {
   constructor(scene: Phaser.Scene, texture: string, state: SpriteState) {
     super(scene, state.x, state.y, texture);

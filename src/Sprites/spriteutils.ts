@@ -440,6 +440,7 @@ const npclist: NPCData[] = [
   },
 ];
 
+// function to load a sprite from the specifed sprite type and data
 export function loadSprite(
   scene: Phaser.Scene,
   spriteState: SpriteState

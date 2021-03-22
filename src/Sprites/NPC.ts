@@ -15,6 +15,9 @@ export interface NPCState extends CharacterState {
   properties?: NPCProperties;
 }
 
+/**
+ * class for an NPC
+ */
 export default class NPC extends Character {
   private speach: NPCSpeachSection[];
 

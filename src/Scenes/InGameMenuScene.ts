@@ -8,6 +8,9 @@ export interface InGameMenuProps {
   game: GameScene;
 }
 
+/**
+ * menu scene displayed during the game
+ */
 export class InGameMenuScene extends Phaser.Scene {
   gameScene?: GameScene;
 

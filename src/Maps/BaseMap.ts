@@ -17,6 +17,9 @@ export interface MapConstructor {
   new (scene: Phaser.Scene, id: string, state?: MapState): BaseMap;
 }
 
+/**
+ * an abstract that class that constains all the common logic and data for the maps
+ */
 export default abstract class BaseMap extends Phaser.Tilemaps.Tilemap {
   id: string;
   sprites: Phaser.GameObjects.Group;
