@@ -216,8 +216,10 @@ export class InventoryScene extends Phaser.Scene {
                         )
                       ] = "null";
                       this.player!.setState({
-                        health:
-                          this.player!.state.health + item.properties.health,
+                        health: Math.min(
+                          this.player!.state.maxHealth,
+                          this.player!.state.health + item.properties.health
+                        ),
                       });
 
                       this.updateDraw();
