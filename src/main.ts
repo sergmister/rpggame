@@ -1,17 +1,18 @@
-import "phaser";
 import { EventEmitter } from "eventemitter3";
-
-import { MenuScene } from "src/Scenes/MenuScene";
+import "phaser";
+import { DialogScene } from "src/Scenes/DialogScene";
+import { GameOverScene } from "src/Scenes/GameOverScene";
 import { GameScene } from "src/Scenes/GameScene";
 import { HotbarScene } from "src/Scenes/HotbarScene";
-import { DialogScene } from "src/Scenes/DialogScene";
-import { InventoryScene } from "src/Scenes/InventoryScene";
-import { ShopScene } from "src/Scenes/ShopScene";
 import { InGameMenuScene } from "src/Scenes/InGameMenuScene";
-import { GameOverScene } from "src/Scenes/GameOverScene";
+import { InventoryScene } from "src/Scenes/InventoryScene";
+import { MenuScene } from "src/Scenes/MenuScene";
+import { ShopScene } from "src/Scenes/ShopScene";
+import { BattleScene } from "./Scenes/BattleScene";
 
 export const EE = new EventEmitter();
 
+// game configuration for phaser
 const config: Phaser.Types.Core.GameConfig = {
   type: Phaser.AUTO,
   parent: "gamediv",
@@ -30,6 +31,7 @@ const config: Phaser.Types.Core.GameConfig = {
     GameScene,
     HotbarScene,
     InventoryScene,
+    BattleScene,
     ShopScene,
     DialogScene,
     InGameMenuScene,

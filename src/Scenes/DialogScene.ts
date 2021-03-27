@@ -113,7 +113,7 @@ export class DialogScene extends Phaser.Scene {
 
   private remove(ret?: string, stop?: boolean) {
     this.scale.removeListener("resize", this.resizeCallback, this);
-    this.scene.stop(DialogKey);
+    this.scene.stop();
     if (this.callback) {
       this.callback(ret, stop);
     }

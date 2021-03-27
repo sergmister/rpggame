@@ -14,6 +14,7 @@ export interface Item {
   };
 }
 
+// list with each item and its corresponding description and properties
 export const itemList: Item[] = [
   { name: "null", index: 15 },
   {
@@ -116,6 +117,7 @@ export const itemList: Item[] = [
 
 // function for getting an item from a string ID
 export function getItem(name: string): Item {
+  // finds item by name
   let item = itemList.find((x) => x.name === name);
   if (!item) {
     item = itemList[0];
@@ -123,6 +125,6 @@ export function getItem(name: string): Item {
   return item;
 }
 
-export const itemRecipes: { in: string[]; out: string }[] = [
-  { in: ["wooden sword", "wooden sword"], out: "stone sword" },
-];
+// export const itemRecipes: { in: string[]; out: string }[] = [
+//   { in: ["wooden sword", "wooden sword"], out: "stone sword" },
+// ];

@@ -1,8 +1,7 @@
 import "phaser";
-
-import Character from "src/Sprites/Character";
-import type { CharacterState } from "src/Sprites/Character";
 import type GlobalPlayer from "src/GlobalPlayer";
+import type { CharacterState } from "src/Sprites/Character";
+import Character from "src/Sprites/Character";
 
 type moveKeys = {
   up: Phaser.Input.Keyboard.Key;
@@ -19,12 +18,16 @@ export interface PlayerState extends CharacterState {}
  * class for the player that is strictly for graphics and user interaction
  */
 export default class Player extends Character {
+  // reference to the global player singleton
   globalPlayer: GlobalPlayer;
 
+  // stores the various movement key objects
   private keys: moveKeys;
 
+  // whether player is frozen
   frozen = false;
 
+  // constructs player from state
   constructor(scene: Phaser.Scene, state: PlayerState) {
     super(scene, "Male_01-1", state);
 
@@ -38,9 +41,11 @@ export default class Player extends Character {
     }) as moveKeys;
   }
 
+  // runs every frame
   preUpdate(time: number, delta: number) {
     super.preUpdate(time, delta);
 
+    // checks if player is frozen
     if (this.frozen) {
       this.setVelocity(0, 0);
       switch (this.last_dir) {
@@ -61,6 +66,7 @@ export default class Player extends Character {
       let x = 0,
         y = 0;
 
+      // figure out direction based on keys
       if (this.keys.down.isDown) {
         y += 1;
       }
@@ -81,6 +87,7 @@ export default class Player extends Character {
 
       this.setVelocity(32 * 10 * x, 32 * 10 * y);
 
+      // play corresponding movement animation
       if (y > 0) {
         this.anims.play("down", true);
         this.last_dir = "down";
@@ -112,12 +119,12 @@ export default class Player extends Character {
     }
   }
 
+  // returns player state
   getState(): PlayerState {
     return { ...super.getState() };
   }
 
-  getPlayerState() {}
-
+  // destroys the sprite
   destroy() {
     super.destroy();
   }

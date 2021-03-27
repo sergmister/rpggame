@@ -1,6 +1,5 @@
 import "phaser";
-
-import { GameKey, GameProps, GameScene } from "src/Scenes/GameScene";
+import { GameKey, GameProps } from "src/Scenes/GameScene";
 
 export const MenuKey = "Menu";
 

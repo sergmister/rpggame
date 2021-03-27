@@ -1,9 +1,7 @@
 import "phaser";
-
-import { EE } from "src/main";
-
-import { getItem } from "src/Items/itemutils";
 import type GlobalPlayer from "src/GlobalPlayer";
+import { getItem } from "src/Items/itemutils";
+import { EE } from "src/main";
 
 export interface HotbarData {
   maxHealth: number;
@@ -279,6 +277,8 @@ export class HotbarScene extends Phaser.Scene {
           ) as Phaser.GameObjects.Image;
           hotbarItem.setScale(i === hotbarData.selectedItem ? 2.25 : 2);
         }
+
+        this.prevHotbarData = hotbarData;
       }
     }
   }

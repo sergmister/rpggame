@@ -5,9 +5,9 @@
     "moduleResolution": "node",
     "lib": ["DOM", "ESNext", "DOM.Iterable"],
     "jsx": "preserve",
-    "baseUrl": "./",
+    "baseUrl": "src",
     "paths": {
-      "src/*": ["./src/*"]
+      "src/*": ["*"]
     },
     "noEmit": false,
     "strict": true,

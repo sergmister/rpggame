@@ -1,12 +1,14 @@
 import "phaser";
-
-import { getItem } from "src/Items/itemutils";
 import type GlobalPlayer from "src/GlobalPlayer";
-import { GameKey } from "./GameScene";
-import { DialogKey } from "./DialogScene";
-import type { DialogProps } from "./DialogScene";
+import { getItem } from "src/Items/itemutils";
+import type { DialogProps } from "src/Scenes/DialogScene";
+import { DialogKey } from "src/Scenes/DialogScene";
 
 export const InventoryKey = "Inventory";
+
+export interface InventoryProps {
+  callback?(): void;
+}
 
 /**
  * renders the inventory
@@ -18,6 +20,8 @@ export class InventoryScene extends Phaser.Scene {
   private container?: Phaser.GameObjects.Container;
 
   private player?: GlobalPlayer;
+
+  private callback?(): void;
 
   private cords: { x: number; y: number; hover: boolean }[];
 
@@ -42,7 +46,9 @@ export class InventoryScene extends Phaser.Scene {
     }
   }
 
-  create() {
+  create(props: InventoryProps) {
+    this.callback = props.callback;
+
     this.player = this.registry.get("GlobalPlayer");
 
     this.container = this.add.container(this.centerX, this.centerY);
@@ -127,148 +133,149 @@ export class InventoryScene extends Phaser.Scene {
     this.resizeCallback();
 
     this.input.keyboard.once("keyup-ESC", () => {
-      this.scene.resume(GameKey);
       this.scale.removeListener("resize", this.resizeCallback, this);
       this.scene.stop(InventoryKey);
+      if (this.callback) {
+        this.callback();
+      }
     });
   }
 
   private draw() {
-    if (this.container && this.player) {
-      const slotWidth = 72;
-      const slotHeight = 72;
+    const slotWidth = 72;
+    const slotHeight = 72;
 
-      const background = this.add.graphics().setName("background");
-      background.fillStyle(0x444444, 0.5);
-      background.fillRoundedRect(-200, -160, 2 * 200, 2 * 160, 24);
-      this.container.add(background);
+    const background = this.add.graphics().setName("background");
+    background.fillStyle(0x444444, 0.5);
+    background.fillRoundedRect(-200, -160, 2 * 200, 2 * 160, 24);
+    this.container!.add(background);
 
-      for (let i = 0; i < 20; i++) {
-        const cord = this.cords[i];
+    for (let i = 0; i < 20; i++) {
+      const cord = this.cords[i];
 
-        const inventoryItem = this.add
-          .sprite(
-            cord.x,
-            cord.y,
-            "icons_inventory",
-            getItem(this.player.state.items[i]).index
-          )
-          .setScale(2)
-          .setName(`inventoryItem_${i}`)
-          .setInteractive();
+      const inventoryItem = this.add
+        .sprite(
+          cord.x,
+          cord.y,
+          "icons_inventory",
+          getItem(this.player!.state.items[i]).index
+        )
+        .setScale(2)
+        .setName(`inventoryItem_${i}`)
+        .setInteractive();
 
-        inventoryItem.on("pointerover", () => {
-          this.cords[i].hover = true;
-          const descText = getItem(this.player!.state.items[i]).desription;
-          if (descText) {
-            setTimeout(() => {
-              if (this.cords[i].hover) {
-                this.container!.add(
-                  this.drawDescription(i, cord.x, cord.y, descText)
-                );
-              }
-            }, 250);
-          }
-        });
-
-        inventoryItem.on("pointerout", () => {
-          this.cords[i].hover = false;
-          this.container!.remove(
-            this.container!.getByName(`description_${i}`),
-            true
-          );
-        });
-
-        inventoryItem.on("pointerdown", () => {
-          this.cords[i].hover = false;
-          this.container!.remove(
-            this.container!.getByName(`description_${i}`),
-            true
-          );
-        });
-
-        inventoryItem.on("pointerup", () => {
-          if (!this.isDragging) {
-            if (this.player && this.player.state.items[i] !== "null") {
-              let options = ["Nothing", "Delete"];
-              const item = getItem(this.player.state.items[i]);
-              if (item.properties?.health || item.properties?.max_health) {
-                options.push("Use");
-              }
-              this.scene.launch(DialogKey, {
-                text: `What would you like to do with the ${this.player.state.items[i]}?`,
-                options: options,
-                callback: (ret: string) => {
-                  if (ret === "Delete") {
-                    this.player!.state.items[i] = "null";
-
-                    this.player!.setState({});
-
-                    this.updateDraw();
-                  } else if (ret === "Use") {
-                    if (
-                      item.properties?.health &&
-                      this.player!.state.health < this.player!.state.maxHealth
-                    ) {
-                      this.player!.state.items[
-                        this.player!.state.items.findIndex(
-                          (x) => x === item.name
-                        )
-                      ] = "null";
-                      this.player!.setState({
-                        health: Math.min(
-                          this.player!.state.maxHealth,
-                          this.player!.state.health + item.properties.health
-                        ),
-                      });
-
-                      this.updateDraw();
-                    }
-                    if (item.properties?.max_health) {
-                      this.player!.state.items[
-                        this.player!.state.items.findIndex(
-                          (x) => x === item.name
-                        )
-                      ] = "null";
-                      this.player!.setState({
-                        maxHealth:
-                          this.player!.state.maxHealth +
-                          item.properties.max_health,
-                        health:
-                          this.player!.state.health +
-                          item.properties.max_health,
-                      });
-
-                      this.updateDraw();
-                    }
-                  }
-                },
-              } as DialogProps);
+      inventoryItem.on("pointerover", () => {
+        this.cords[i].hover = true;
+        const descText = getItem(this.player!.state.items[i]).desription;
+        if (descText) {
+          setTimeout(() => {
+            if (this.cords[i].hover) {
+              this.container!.add(
+                this.getDescription(i, cord.x, cord.y, descText)
+              );
             }
+          }, 250);
+        }
+      });
+
+      inventoryItem.on("pointerout", () => {
+        this.cords[i].hover = false;
+        this.container!.remove(
+          this.container!.getByName(`description_${i}`),
+          true
+        );
+        this.container!.remove(
+          this.container!.getByName(`description_${i}`),
+          true
+        );
+      });
+
+      inventoryItem.on("pointerdown", () => {
+        this.cords[i].hover = false;
+        this.container!.remove(
+          this.container!.getByName(`description_${i}`),
+          true
+        );
+      });
+
+      inventoryItem.on("pointerup", () => {
+        if (
+          !this.isDragging &&
+          this.player &&
+          this.player.state.items[i] !== "null"
+        ) {
+          let options = ["Nothing", "Delete"];
+          const item = getItem(this.player.state.items[i]);
+          if (item.properties?.health || item.properties?.max_health) {
+            options.push("Use");
           }
-        });
 
-        this.input.setDraggable(inventoryItem);
-        this.container.add(inventoryItem);
+          this.scene.launch(DialogKey, {
+            text: `What would you like to do with the ${this.player.state.items[i]}?`,
+            options: options,
+            callback: (ret: string) => {
+              if (ret === "Delete") {
+                this.player!.state.items[i] = "null";
 
-        const inventoryItemNumber = this.add
-          .text(
-            cord.x - slotWidth / 2 + 12,
-            cord.y - slotHeight / 2 + 8,
-            `${i + 1}`
-          )
-          .setName(`inventoryItemNumber_${i}`);
-        this.container.add(inventoryItemNumber);
-      }
+                this.player!.setState({});
+
+                this.updateDraw();
+              } else if (ret === "Use") {
+                if (
+                  item.properties?.health &&
+                  this.player!.state.health < this.player!.state.maxHealth
+                ) {
+                  this.player!.state.items[
+                    this.player!.state.items.findIndex((x) => x === item.name)
+                  ] = "null";
+                  this.player!.setState({
+                    health: Math.min(
+                      this.player!.state.maxHealth,
+                      this.player!.state.health + item.properties.health
+                    ),
+                  });
+
+                  this.updateDraw();
+                }
+                if (item.properties?.max_health) {
+                  this.player!.state.items[
+                    this.player!.state.items.findIndex((x) => x === item.name)
+                  ] = "null";
+                  this.player!.setState({
+                    maxHealth:
+                      this.player!.state.maxHealth + item.properties.max_health,
+                    health:
+                      this.player!.state.health + item.properties.max_health,
+                  });
+
+                  this.updateDraw();
+                }
+              }
+            },
+          } as DialogProps);
+        }
+      });
+
+      this.input.setDraggable(inventoryItem);
+      this.container!.add(inventoryItem);
+
+      const inventoryItemNumber = this.add
+        .text(
+          cord.x - slotWidth / 2 + 12,
+          cord.y - slotHeight / 2 + 8,
+          `${i + 1}`
+        )
+        .setName(`inventoryItemNumber_${i}`);
+      this.container!.add(inventoryItemNumber);
     }
   }
 
-  private drawDescription(index: number, x: number, y: number, text: string) {
+  private getDescription(index: number, x: number, y: number, text: string) {
     const container = this.add
       .container(x, y - 120)
       .setName(`description_${index}`);
 
-    const background = this.add.graphics().setName("background");
+    const background = this.add.graphics();
     background.fillStyle(0xcaa472, 0.94);
     background.fillRoundedRect(-160, -84, 2 * 160, 2 * 84, 12);
     container.add(background);
@@ -290,14 +297,12 @@ export class InventoryScene extends Phaser.Scene {
   }
 
   private updateDraw() {
-    if (this.player) {
-      for (let i = 0; i < 20; i++) {
-        (this.container!.getByName(
-          `inventoryItem_${i}`
-        ) as Phaser.GameObjects.Image).setFrame(
-          getItem(this.player.state.items[i]).index
-        );
-      }
+    for (let i = 0; i < 20; i++) {
+      (this.container!.getByName(
+        `inventoryItem_${i}`
+      ) as Phaser.GameObjects.Image).setFrame(
+        getItem(this.player!.state.items[i]).index
+      );
     }
   }
 

@@ -1,5 +1,4 @@
 import { EE } from "src/main";
-
 import type { HotbarData } from "src/Scenes/HotbarScene";
 
 export interface GlobalPlayerState {
@@ -15,6 +14,7 @@ export interface GlobalPlayerState {
 
 /**
  * class that contains all the data and logic required for the player that is not for the graphics
+ * this class is singleton and is only loaded once per game in the game scene
  */
 export default class GlobalPlayer {
   state: GlobalPlayerState;
@@ -34,19 +34,21 @@ export default class GlobalPlayer {
         items: new Array<string>(20).fill("null"),
         selectedItem: 0,
       };
-      // this.state.items[0] = "wooden sword";
     }
   }
 
+  // saves the state of the player to localStorage
   save() {
     localStorage.setItem("GlobalPlayerState", JSON.stringify(this.state));
   }
 
+  // sets the updated state of the player and emits an event to notify listeners that need to update
   setState(state: Partial<GlobalPlayerState>) {
     Object.assign(this.state, state);
     EE.emit("updateGlobalPlayerState");
   }
 
+  // returns the data needed to render the hotbar
   getHotbarData(): HotbarData {
     return {
       maxHealth: this.state.maxHealth,
@@ -58,6 +60,8 @@ export default class GlobalPlayer {
     };
   }
 
+  // gives the player an item
+  // returns true if successful, else returns false
   giveItem(name: string): boolean {
     for (let i = 0; i < 20; i++) {
       if (this.state.items[i] === "null") {

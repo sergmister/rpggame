@@ -18,6 +18,11 @@
       },
       {
         "type": "tilemapTiledJSON",
+        "key": "tilemap_forest",
+        "url": "assets/tilemaps/forest.json"
+      },
+      {
+        "type": "tilemapTiledJSON",
         "key": "tilemap_desert",
         "url": "assets/tilemaps/desert.json"
       },
@@ -41,6 +46,17 @@
         "type": "spritesheet",
         "key": "icons_shop",
         "url": "assets/Shikashi's_Fantasy_Icons_Pack_v2/Icons_Shop.png",
+        "frameConfig": {
+          "frameWidth": 32,
+          "frameHeight": 32,
+          "margin": 1,
+          "spacing": 2
+        }
+      },
+      {
+        "type": "spritesheet",
+        "key": "icons_transparent",
+        "url": "assets/Shikashi's_Fantasy_Icons_Pack_v2/Icons_Transparent.png",
         "frameConfig": {
           "frameWidth": 32,
           "frameHeight": 32,
@@ -189,6 +205,17 @@
         "type": "spritesheet",
         "key": "Enemy_02-1",
         "url": "assets/Pipoya_RPG_Character_Sprites/Enemy/Enemy_02-1.png",
+        "frameConfig": {
+          "frameWidth": 32,
+          "frameHeight": 32,
+          "margin": 1,
+          "spacing": 2
+        }
+      },
+      {
+        "type": "spritesheet",
+        "key": "Enemy_03-1",
+        "url": "assets/Pipoya_RPG_Character_Sprites/Enemy/Enemy_03-1.png",
         "frameConfig": {
           "frameWidth": 32,
           "frameHeight": 32,

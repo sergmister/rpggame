@@ -1,6 +1,5 @@
 import "phaser";
-
-import { GameKey, GameProps, GameScene } from "src/Scenes/GameScene";
+import { GameKey, GameScene } from "src/Scenes/GameScene";
 
 export const InGameMenuKey = "InGameMenu";
 
@@ -18,8 +17,8 @@ export class InGameMenuScene extends Phaser.Scene {
     super({ key: InGameMenuKey });
   }
 
-  create() {
-    this.gameScene = this.registry.get("gameScene");
+  create(props: InGameMenuProps) {
+    this.gameScene = props.game;
 
     this.cameras.main.startFollow({ x: 400, y: 300 });
 
@@ -105,6 +104,7 @@ export class InGameMenuScene extends Phaser.Scene {
   }
 
   resumeGame() {
-    this.scene.switch(GameKey);
+    this.scene.stop();
+    this.scene.run(GameKey);
   }
 }

@@ -1,7 +1,6 @@
 import "phaser";
-
-import Sprite from "src/Sprites/Sprite";
 import type { SpriteState } from "src/Sprites/Sprite";
+import Sprite from "src/Sprites/Sprite";
 
 export interface CharacterState extends SpriteState {
   last_dir?: string;
@@ -11,14 +10,16 @@ export interface CharacterState extends SpriteState {
  * base class for a character sprite
  */
 export default abstract class Character extends Sprite {
-  protected last_dir = "down";
+  // last dir the character was facing
+  protected last_dir;
 
+  // constructs player from state
   constructor(scene: Phaser.Scene, texture: string, state: CharacterState) {
     super(scene, texture, state);
 
-    if (state.last_dir) {
-      this.last_dir = state.last_dir;
-    }
+    this.last_dir = state.last_dir || "down";
+
+    // creates animations for use by phaser
 
     this.anims.create({
       key: "idle_down",
@@ -74,16 +75,20 @@ export default abstract class Character extends Sprite {
 
     this.anims.play(this.last_dir);
 
+    // adds character to the scene and physics simulation
     this.scene.add.existing(this);
     this.scene.physics.add.existing(this);
   }
 
+  // run every frame
   preUpdate(time: number, delta: number) {
     super.preUpdate(time, delta);
   }
 
+  // called when character is touched by another character
   touched(char: Character): void {}
 
+  // face towards a coordinate
   faceDir(x: number, y: number) {
     const dx = x - this.x;
     const dy = y - this.y;
@@ -107,6 +112,7 @@ export default abstract class Character extends Sprite {
     }
   }
 
+  // returns character state
   getState(): CharacterState {
     return { ...super.getState(), ...{ last_dir: this.last_dir } };
   }

@@ -1,7 +1,5 @@
 import "phaser";
 
-// genarics to the rescue?
-
 export interface SpriteState {
   name?: string;
   type: string;
@@ -13,6 +11,7 @@ export interface SpriteState {
  * base class for a sprite
  */
 export default class Sprite extends Phaser.Physics.Arcade.Sprite {
+  // constructor to load the sprite based of a state
   constructor(scene: Phaser.Scene, texture: string, state: SpriteState) {
     super(scene, state.x, state.y, texture);
     if (state.name) {
@@ -21,8 +20,10 @@ export default class Sprite extends Phaser.Physics.Arcade.Sprite {
     this.type = state.type;
   }
 
+  // function called when one sprite touched another
   touched(char: Sprite): void {}
 
+  // returns the state of the sprite in an object
   getState(): SpriteState {
     return {
       ...(this.name && { name: this.name }),
@@ -34,6 +35,7 @@ export default class Sprite extends Phaser.Physics.Arcade.Sprite {
     };
   }
 
+  // destroys the sprite
   destroy() {
     super.destroy();
   }

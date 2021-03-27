@@ -4,6 +4,7 @@ const CopyWebpackPlugin = require("copy-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const { InjectManifest } = require("workbox-webpack-plugin");
 
+/** @type {import("webpack").Configuration} */
 module.exports = {
   entry: { main: "./src/main.ts" },
   mode: "production",
@@ -29,7 +30,7 @@ module.exports = {
   resolve: {
     extensions: [".ts", ".tsx", ".js"],
     alias: {
-      src: path.resolve(__dirname, "src/"),
+      src: path.resolve(__dirname, "src"),
     },
   },
   module: {

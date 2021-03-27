@@ -1,8 +1,6 @@
 import "phaser";
-
-import { getItem } from "src/Items/itemutils";
 import type GlobalPlayer from "src/GlobalPlayer";
-import { GameKey } from "./GameScene";
+import { getItem } from "src/Items/itemutils";
 import { DialogKey, DialogProps } from "./DialogScene";
 
 export const ShopKey = "Shop";
@@ -77,92 +75,94 @@ export class ShopScene extends Phaser.Scene {
   }
 
   private draw() {
-    if (this.container && this.player) {
-      const slotWidth = 72;
-      const slotHeight = 72;
+    const slotWidth = 72;
+    const slotHeight = 72;
 
-      const background = this.add.graphics().setName("background");
-      background.fillStyle(0x855e42, 1);
-      background.fillRoundedRect(-200, -160, 2 * 200, 2 * 160, 24);
-      background.lineStyle(2, 0x222222, 1);
-      background.strokeRoundedRect(-200, -160, 2 * 200, 2 * 160, 24);
-      this.container.add(background);
+    const background = this.add.graphics().setName("background");
+    background.fillStyle(0x855e42, 1);
+    background.fillRoundedRect(-200, -160, 2 * 200, 2 * 160, 24);
+    background.lineStyle(2, 0x222222, 1);
+    background.strokeRoundedRect(-200, -160, 2 * 200, 2 * 160, 24);
+    this.container!.add(background);
 
-      for (let i = 0; i < 20; i++) {
-        if (this.items[i]) {
-          const cord = this.cords[i];
+    for (let i = 0; i < 20; i++) {
+      if (this.items[i]) {
+        const cord = this.cords[i];
 
-          const shopItem = this.add
-            .sprite(
-              cord.x,
-              cord.y,
-              "icons_shop",
-              getItem(this.items[i].name).index
-            )
-            .setScale(2)
-            .setName(`shopItem_${i}`)
-            .setInteractive();
+        const shopItem = this.add
+          .sprite(
+            cord.x,
+            cord.y,
+            "icons_shop",
+            getItem(this.items[i].name).index
+          )
+          .setScale(2)
+          .setName(`shopItem_${i}`)
+          .setInteractive();
 
-          shopItem.on("pointerover", () => {
-            this.cords[i].hover = true;
-            const descText = getItem(this.items[i].name).desription;
-            if (descText) {
-              setTimeout(() => {
-                if (this.cords[i].hover) {
-                  this.container!.add(
-                    this.drawDescription(i, cord.x, cord.y, descText)
-                  );
+        shopItem.on("pointerover", () => {
+          this.cords[i].hover = true;
+          const descText = getItem(this.items[i].name).desription;
+          if (descText) {
+            setTimeout(() => {
+              if (this.cords[i].hover) {
+                this.container!.add(
+                  this.getDescription(i, cord.x, cord.y, descText)
+                );
+              }
+            }, 250);
+          }
+        });
+
+        shopItem.on("pointerout", () => {
+          this.cords[i].hover = false;
+          this.container!.remove(
+            this.container!.getByName(`description_${i}`),
+            true
+          );
+          this.container!.remove(
+            this.container!.getByName(`description_${i}`),
+            true
+          );
+        });
+
+        shopItem.on("pointerdown", () => {
+          this.cords[i].hover = false;
+          this.container!.remove(
+            this.container!.getByName(`description_${i}`),
+            true
+          );
+        });
+
+        shopItem.on("pointerup", () => {
+          if (this.player && this.items[i].name !== "null") {
+            this.scene.launch(DialogKey, {
+              text: `What would you like to do with the ${this.items[i].name}?`,
+              options: ["Nothing", `Buy for ${this.items[i].price}`],
+              callback: (ret: string) => {
+                if (ret.startsWith("Buy")) {
+                  this.buyItem(i, this.items[i].name, this.items[i].price);
                 }
-              }, 250);
-            }
-          });
+              },
+            } as DialogProps);
+          }
+        });
+        this.container!.add(shopItem);
 
-          shopItem.on("pointerout", () => {
-            this.cords[i].hover = false;
-            this.container!.remove(
-              this.container!.getByName(`description_${i}`),
-              true
-            );
-          });
-
-          shopItem.on("pointerdown", () => {
-            this.cords[i].hover = false;
-            this.container!.remove(
-              this.container!.getByName(`description_${i}`),
-              true
-            );
-          });
-
-          shopItem.on("pointerup", () => {
-            if (this.player && this.items[i].name !== "null") {
-              this.scene.launch(DialogKey, {
-                text: `What would you like to do with the ${this.items[i].name}?`,
-                options: ["Nothing", `Buy for ${this.items[i].price}`],
-                callback: (ret: string) => {
-                  if (ret.startsWith("Buy")) {
-                    this.buyItem(i, this.items[i].name, this.items[i].price);
-                  }
-                },
-              } as DialogProps);
-            }
-          });
-          this.container.add(shopItem);
-
-          const shopItemNumber = this.add
-            .text(
-              cord.x - slotWidth / 2 + 12,
-              cord.y - slotHeight / 2 + 8,
-              `${this.items[i].price}`,
-              { color: "gold" }
-            )
-            .setName(`shopItemNumber_${i}`);
-          this.container.add(shopItemNumber);
-        }
+        const shopItemNumber = this.add
+          .text(
+            cord.x - slotWidth / 2 + 10,
+            cord.y - slotHeight / 2 + 6,
+            `${this.items[i].price}`,
+            { color: "gold", fontStyle: "bold" }
+          )
+          .setName(`shopItemNumber_${i}`);
+        this.container!.add(shopItemNumber);
       }
     }
   }
 
-  private drawDescription(index: number, x: number, y: number, text: string) {
+  private getDescription(index: number, x: number, y: number, text: string) {
     const container = this.add
       .container(x, y - 120)
       .setName(`description_${index}`);
