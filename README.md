@@ -1,3 +1,3 @@
-# rpggame
+# RPG Game
 
-I know this is spaghetti code, I didn't want to spend any more time.
+A simple tilemap based RPG game with Typescript and Phaser. Allows game state to saved via localStorage.
